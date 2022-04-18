@@ -12,6 +12,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.pay.organism.model.tools.RoleType;
@@ -25,9 +26,11 @@ public class Account {
 
     @NotNull(message = "Name cannot be null") @NotEmpty @NotBlank
     private String name;
-    @NotBlank
-    @Size(max = 50)
-    @Email
+    @NotNull
+	@Email
+	@Size(max = 100)
+	@Pattern(regexp=".+@.+\\..+", message="Wrong email!")
+	@Column(name = "user_mail", unique = true)
     private String email;
 
     @Column(columnDefinition = "boolean default false")

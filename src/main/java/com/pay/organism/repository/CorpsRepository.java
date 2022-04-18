@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CorpsRepository extends JpaRepository<CorpsRepository, Integer> {
+public interface CorpsRepository extends JpaRepository<Corps, Integer> {
     List<Corps> findByOrganism(int organism);
     
 }
