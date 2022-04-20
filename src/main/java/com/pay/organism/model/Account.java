@@ -96,11 +96,11 @@ public class Account {
     }
 
     public Organism getOrganism() {
-        return Organism;
+        return organism;
     }
 
     public void setOrganism(Organism organism) {
-        Organism = organism;
+        this.organism = organism;
     }
 
     

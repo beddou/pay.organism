@@ -28,7 +28,7 @@ public class Organism {
     private BudgetType budget;
     private Date creationDate;
     @Column(columnDefinition = "boolean default false")
-    private Boolean activated;
+    private boolean activated;
 
 
     public int getId() {
@@ -55,10 +55,10 @@ public class Organism {
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
-    public Boolean getActivated() {
+    public boolean isActivated() {
         return activated;
     }
-    public void setActivated(Boolean activated) {
+    public void setActivated(boolean activated) {
         this.activated = activated;
     }
 

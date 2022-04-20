@@ -1,5 +1,7 @@
 package com.pay.organism.business;
 
+import java.util.Optional;
+
 import com.pay.organism.model.Account;
 import com.pay.organism.repository.AccountRepository;
 
@@ -12,13 +14,24 @@ public class AccountBusiness {
     @Autowired
     private AccountRepository accountRepository;
 
+    public Optional<Account> getAccount(int id) {
+        return accountRepository.findById(id);
+    }
+
+
     public Account createAccount(Account account){
         account.setActivated(false);
         return accountRepository.save(account);
     }
 
-    public void activateAccount(int idAccount){
-        accountRepository.getById(idAccount);
+    public Account activateAccount(int idAccount){
+        Account account = accountRepository.getById(idAccount);
+        account.setActivated(true);
+        return accountRepository.save(account);
+    }
+
+    public void sendActivationEmail(){
+        
     }
     
 }
