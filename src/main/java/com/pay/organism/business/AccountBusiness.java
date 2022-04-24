@@ -30,7 +30,11 @@ public class AccountBusiness {
         return accountRepository.save(account);
     }
 
-    public void sendActivationEmail(){
+    public void sendActivationEmail(int idAccount){
+        
+    }
+
+    public void sendActivationSuccesEmail(int idAccount){
         
     }
     

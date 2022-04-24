@@ -1,10 +1,12 @@
 package com.pay.organism.controller;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import com.pay.organism.business.AccountBusiness;
 import com.pay.organism.business.OrganismBusiness;
+import com.pay.organism.dto.AccountOrganismDto;
 import com.pay.organism.exceptions.EntityNotFoundException;
 import com.pay.organism.exceptions.NoEntityAddedException;
 import com.pay.organism.model.Account;
@@ -55,10 +57,10 @@ public class OrganismController {
     }
 
     @PostMapping(value = "/Organism/Organism/create")
-    public ResponseEntity<Organism> createOrganism(@RequestBody Organism organism) {
+    public ResponseEntity<Account> createOrganism(@RequestBody AccountOrganismDto accountOrganismDto) {
         try {
-            Organism organism2 = organismBusiness.createOrganism(organism);
-            return new ResponseEntity<>(organism2, HttpStatus.CREATED);
+            Account account = organismBusiness.createOrganismOfThatAccount(accountOrganismDto);
+            return new ResponseEntity<>(account, HttpStatus.CREATED);
         } catch (Exception e) {
             throw new NoEntityAddedException("Organism not saved");
         }
@@ -68,21 +70,24 @@ public class OrganismController {
     @PutMapping(value = "/Organism/Organism/update/{id}")
     public ResponseEntity<Organism> upDateOrganism(@PathVariable("id") int id, @RequestBody Organism organism) {
 
-        Optional<Organism> organism2 = organismBusiness.getOrganism(id);
-        if (organism2.isPresent()) {
-            try {
-                organism.setId(id);
-                Organism organism3 = organismBusiness.upDateOrganism(organism);
-                return new ResponseEntity<>(organism3, HttpStatus.CREATED);
 
-            } catch (Exception e) {
-                throw new NoEntityAddedException("entity not saved");
+            Optional<Organism> organism2 = organismBusiness.getOrganism(id);
+            
+            if (organism2.isPresent()) {
+                try {
+                  
+                    Organism organism4 = organismBusiness.upDateOrganism(id, organism);
+                    return new ResponseEntity<>(organism4, HttpStatus.CREATED);
+
+                } catch (Exception e) {
+                    throw new NoEntityAddedException("entity not saved");
+                }
+
+            } else {
+                throw new EntityNotFoundException("document introuvable");
+
             }
-
-        } else {
-            throw new EntityNotFoundException("document introuvable");
-
-        }
+       
 
     }
 
@@ -93,9 +98,11 @@ public class OrganismController {
         if (account.isPresent()) {
             Organism organism = account.get().getOrganism();
             if (!organism.isActivated()) {
-                if (organismBusiness.initializeOrganism(organism.getId())) {
+                boolean active = organismBusiness.initializeOrganism(organism.getId());
+                if (active) {
                     organismBusiness.activateOrganism(organism.getId());
                     accountBusiness.activateAccount(idAccount);
+                    accountBusiness.sendActivationSuccesEmail(idAccount);
                     return new ResponseEntity<>(organism, HttpStatus.CREATED);
                 } else
                     throw new NoEntityAddedException("entity not saved");

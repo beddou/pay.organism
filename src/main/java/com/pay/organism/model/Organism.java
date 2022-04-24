@@ -21,7 +21,9 @@ public class Organism {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    
     @NotNull(message = "Name cannot be null") @NotEmpty @NotBlank
+    
     private String design;
     
     @Enumerated(EnumType.STRING)
