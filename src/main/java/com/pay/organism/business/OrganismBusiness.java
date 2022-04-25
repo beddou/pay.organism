@@ -75,8 +75,10 @@ public class OrganismBusiness {
         Optional<Organism> org = organismRepository.findById(id);
         Organism organism2 = org.get();
 
-        organism2.setBudget(organism.getBudget());
-        organism2.setDesign(organism.getDesign());
+        if (organism.getBudget() != null)
+            organism2.setBudget(organism.getBudget());
+        if (organism.getDesign() != null)
+            organism2.setDesign(organism.getDesign());
 
         return organismRepository.save(organism2);
 
