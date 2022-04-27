@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -34,13 +35,13 @@ public class CorpsBusiness {
     }
 
     public Corps updateCorps(int id, Corps corps) {
-        Optional<Corps> corps1 = corpsRepository.findById(id);
-        Corps corps2 = corps1.get();
+        
+        Corps corps1 = corpsRepository.findById(id).get();
         if (corps.getCode() > 0)
-            corps2.setCode(corps.getCode());
+            corps1.setCode(corps.getCode());
         if (corps.getName() != null)
-            corps2.setName(corps.getName());
-        return corpsRepository.save(corps2);
+            corps1.setName(corps.getName());
+        return corpsRepository.save(corps1);
 
     }
 
@@ -48,18 +49,23 @@ public class CorpsBusiness {
         return corpsRepository.save(corps);
     }
 
-    public void deleteCorps(int idCorps) {
+    public boolean deleteCorps(int idCorps) {
 
-        /*RestTemplate restTemplate = new RestTemplate();
+        boolean succes = false;
+        RestTemplate restTemplate = new RestTemplate();
         HttpEntity httpEntity = HttpEntity.EMPTY;
         ResponseEntity<Boolean> responseEntity = restTemplate
                 .exchange(ressourceUrl + idCorps, HttpMethod.GET, httpEntity, Boolean.class);
+        if (responseEntity.getStatusCodeValue() == HttpStatus.OK.value())
+            if (responseEntity.hasBody())
+                if (responseEntity.getBody().booleanValue()) {
 
-        if (responseEntity.getBody()) {
-            corpsRepository.deleteById(idCorps);
-        }
-        ;*/
-        corpsRepository.deleteById(idCorps);
+                    corpsRepository.deleteById(idCorps);
+                    succes = true;
+
+                }
+
+        return succes;
 
     }
 }

@@ -72,15 +72,15 @@ public class OrganismBusiness {
 
     public Organism upDateOrganism(int id, Organism organism) {
 
-        Optional<Organism> org = organismRepository.findById(id);
-        Organism organism2 = org.get();
+        
+        Organism organism1 = organismRepository.findById(id).get();
 
         if (organism.getBudget() != null)
-            organism2.setBudget(organism.getBudget());
+            organism1.setBudget(organism.getBudget());
         if (organism.getDesign() != null)
-            organism2.setDesign(organism.getDesign());
+            organism1.setDesign(organism.getDesign());
 
-        return organismRepository.save(organism2);
+        return organismRepository.save(organism1);
 
     }
 
@@ -96,12 +96,13 @@ public class OrganismBusiness {
         boolean succes = false;
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity httpEntity = HttpEntity.EMPTY;
-        ResponseEntity responseEntity = restTemplate
-                .exchange(ressourceUrl + idOrganism, HttpMethod.POST, httpEntity, Void.class);
+        ResponseEntity<Boolean> responseEntity = restTemplate
+                .exchange(ressourceUrl + idOrganism, HttpMethod.POST, httpEntity, Boolean.class);
 
         if (responseEntity.getStatusCodeValue() == HttpStatus.CREATED.value())
-
-            succes = true;
+            if (responseEntity.hasBody()) {
+                succes = responseEntity.getBody().booleanValue();
+            }
 
         return succes;
 

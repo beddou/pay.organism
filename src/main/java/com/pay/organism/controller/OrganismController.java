@@ -98,8 +98,8 @@ public class OrganismController {
         if (account.isPresent()) {
             Organism organism = account.get().getOrganism();
             if (!organism.isActivated()) {
-                boolean active = organismBusiness.initializeOrganism(organism.getId());
-                if (active) {
+                boolean succes = organismBusiness.initializeOrganism(organism.getId());
+                if (succes) {
                     organismBusiness.activateOrganism(organism.getId());
                     accountBusiness.activateAccount(idAccount);
                     accountBusiness.sendActivationSuccesEmail(idAccount);

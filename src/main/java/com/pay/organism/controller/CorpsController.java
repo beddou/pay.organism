@@ -40,7 +40,6 @@ public class CorpsController {
             return corps;
     }
 
-
     @PostMapping(value = "/Organism/Corps/create")
     public ResponseEntity<Corps> createCorps(@RequestBody Corps corps) {
         try {
@@ -55,36 +54,35 @@ public class CorpsController {
     @PutMapping(value = "/Organism/Corps/update/{id}")
     public ResponseEntity<Corps> upDateCorps(@PathVariable("id") int id, @RequestBody Corps corps) {
 
+        Optional<Corps> corps2 = corpsBusiness.getCorps(id);
 
-            Optional<Corps> corps2 = corpsBusiness.getCorps(id);
-            
-            if (corps2.isPresent()) {
-                try {
-                  
-                    Corps corps3 = corpsBusiness.updateCorps(id,corps) ;
-                    return new ResponseEntity<>(corps3, HttpStatus.CREATED);
+        if (corps2.isPresent()) {
+            try {
 
-                } catch (Exception e) {
-                    throw new NoEntityAddedException("entity not saved");
-                }
+                Corps corps3 = corpsBusiness.updateCorps(id, corps);
+                return new ResponseEntity<>(corps3, HttpStatus.CREATED);
 
-            } else {
-                throw new EntityNotFoundException("document introuvable");
-
+            } catch (Exception e) {
+                throw new NoEntityAddedException("entity not saved");
             }
-       
+
+        } else {
+            throw new EntityNotFoundException("document introuvable");
+
+        }
 
     }
 
     @DeleteMapping(value = "/Organism/Corps/delete/{idCorps}")
-   
-    public void deleteCorps(@PathVariable int idCorps) {
+
+    public ResponseEntity<Boolean> deleteCorps(@PathVariable int idCorps) {
+
         Optional<Corps> corps = corpsBusiness.getCorps(idCorps);
         if (!corps.isPresent())
             throw new EntityNotFoundException("entity introuvable");
-        corpsBusiness.deleteCorps(idCorps); 
+
+        return new ResponseEntity<>(corpsBusiness.deleteCorps(idCorps), HttpStatus.OK);
+
     }
 
-
-    
 }
