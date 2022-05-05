@@ -72,12 +72,11 @@ public class OrganismBusiness {
 
     public Organism upDateOrganism(int id, Organism organism) {
 
-        
         Organism organism1 = organismRepository.findById(id).get();
 
         if (organism.getBudget() != null)
             organism1.setBudget(organism.getBudget());
-        if (organism.getDesign() != null)
+        if (organism.getDesign() != null && !organism.getDesign().equals("") && !organism.getDesign().trim().equals(""))
             organism1.setDesign(organism.getDesign());
 
         return organismRepository.save(organism1);

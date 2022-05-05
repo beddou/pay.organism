@@ -19,7 +19,7 @@ public class Corps {
     private int code;
 
     @NotNull(message = "Name cannot be null") @NotEmpty @NotBlank
-    private String name;
+    private String design;
 
     @ManyToOne
 	@NotNull
@@ -41,12 +41,12 @@ public class Corps {
         this.code = code;
     }
 
-    public String getName() {
-        return name;
+    public String getDesign() {
+        return design;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDesign(String name) {
+        this.design = name;
     }
 
     public Organism getOrganism() {
