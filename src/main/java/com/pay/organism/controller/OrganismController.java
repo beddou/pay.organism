@@ -33,7 +33,7 @@ public class OrganismController {
     @Autowired
     private AccountBusiness accountBusiness;
 
-    @GetMapping(value = "/Organism/Organism/get/{id}")
+    @GetMapping(value = "/Organism/Organism/Get/{id}")
     public ResponseEntity<Organism> getOrganism(@PathVariable int id) {
         Optional<Organism> organism = organismBusiness.getOrganism(id);
         if (organism.isPresent()) {
@@ -47,7 +47,7 @@ public class OrganismController {
 
     }
 
-    @GetMapping(value = "/Organism/Organism/all")
+    @GetMapping(value = "/Organism/Organism/All")
     public List<Organism> allOrganism() {
         List<Organism> organisms = organismBusiness.findAllOrganisms();
         if (organisms.isEmpty())
@@ -56,7 +56,7 @@ public class OrganismController {
             return organisms;
     }
 
-    @PostMapping(value = "/Organism/Organism/create")
+    @PostMapping(value = "/Organism/Organism/Create")
     public ResponseEntity<Account> createOrganism(@RequestBody AccountOrganismDto accountOrganismDto) {
         try {
             Account account = organismBusiness.createOrganismOfThatAccount(accountOrganismDto);
@@ -67,7 +67,7 @@ public class OrganismController {
 
     }
 
-    @PutMapping(value = "/Organism/Organism/update/{id}")
+    @PutMapping(value = "/Organism/Organism/Update/{id}")
     public ResponseEntity<Organism> upDateOrganism(@PathVariable("id") int id, @RequestBody Organism organism) {
 
 
@@ -91,7 +91,7 @@ public class OrganismController {
 
     }
 
-    @PutMapping(value = "/Organism/Organism/activate/{idAccount}")
+    @PutMapping(value = "/Organism/Organism/Activate/{idAccount}")
     public ResponseEntity<Organism> activateOrganism(@PathVariable("idAccount") int idAccount) {
 
         Optional<Account> account = accountBusiness.getAccount(idAccount);

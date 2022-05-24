@@ -31,7 +31,7 @@ public class CorpsController {
     @Autowired
     OrganismBusiness organismBusiness;
 
-    @GetMapping(value = "/Organism/Corps/allByOrganism/{idOrganism}")
+    @GetMapping(value = "/Organism/Corps/All/{idOrganism}")
     public List<Corps> allCorpsByOrganism(@PathVariable int idOrganism) {
         List<Corps> corps = corpsBusiness.findCorpsByOrganism(idOrganism);
         if (corps.isEmpty())
@@ -40,7 +40,7 @@ public class CorpsController {
             return corps;
     }
 
-    @PostMapping(value = "/Organism/Corps/create")
+    @PostMapping(value = "/Organism/Corps/Create")
     public ResponseEntity<Corps> createCorps(@RequestBody Corps corps) {
         try {
             Corps corp = corpsBusiness.createCorps(corps);
@@ -51,7 +51,7 @@ public class CorpsController {
 
     }
 
-    @PutMapping(value = "/Organism/Corps/update/{id}")
+    @PutMapping(value = "/Organism/Corps/Update/{id}")
     public ResponseEntity<Corps> upDateCorps(@PathVariable("id") int id, @RequestBody Corps corps) {
 
         Optional<Corps> corps2 = corpsBusiness.getCorps(id);
@@ -73,7 +73,7 @@ public class CorpsController {
 
     }
 
-    @DeleteMapping(value = "/Organism/Corps/delete/{idCorps}")
+    @DeleteMapping(value = "/Organism/Corps/Delete/{idCorps}")
 
     public ResponseEntity<Boolean> deleteCorps(@PathVariable int idCorps) {
 
