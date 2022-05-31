@@ -127,7 +127,7 @@ public class OrganismController {
 
     }
 
-    @GetMapping(value = "/Organism/Organism/IncrementPayDate/{id}")
+    @PutMapping(value = "/Organism/Organism/IncrementPayDate/{id}")
     public ResponseEntity<LocalDate> incrementPayDate(@PathVariable("id") int id) {
         LocalDate payDate = organismBusiness.incrementPayDate(id);
         if (payDate != null) {
@@ -156,7 +156,7 @@ public class OrganismController {
 
     }
 
-    @GetMapping(value = "/Organism/Organism/IncrementPrimeDate/{id}")
+    @PutMapping(value = "/Organism/Organism/IncrementPrimeDate/{id}")
     public ResponseEntity<LocalDate> incrementPrimeDate(@PathVariable("id") int id) {
         LocalDate primeDate = organismBusiness.incrementPrimeDate(id);
         if (primeDate != null) {
