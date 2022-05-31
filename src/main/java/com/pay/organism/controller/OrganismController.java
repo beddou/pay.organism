@@ -150,7 +150,7 @@ public class OrganismController {
         }
 
         else {
-            throw new EntityNotFoundException("Date of Pay not found");
+            throw new EntityNotFoundException("Date of Prime not found");
 
         }
 
@@ -164,7 +164,7 @@ public class OrganismController {
         }
 
         else {
-            throw new EntityNotFoundException("Date of Pay not incremented");
+            throw new EntityNotFoundException("Date of Prime not incremented");
 
         }
 
