@@ -1,6 +1,6 @@
 package com.pay.organism.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,9 +28,16 @@ public class Organism {
     
     @Enumerated(EnumType.STRING)
     private BudgetType budget;
-    private Date creationDate;
+    private LocalDate creationDate;
     @Column(columnDefinition = "boolean default false")
     private boolean activated;
+
+    //@Temporal(TemporalType.DATE)
+    private LocalDate payDate ;
+
+    //@Temporal(TemporalType.DATE)
+    private LocalDate primeDate;
+  
 
 
     public int getId() {
@@ -51,10 +58,10 @@ public class Organism {
     public void setBudget(BudgetType budget) {
         this.budget = budget;
     }
-    public Date getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
     public boolean isActivated() {
@@ -62,6 +69,18 @@ public class Organism {
     }
     public void setActivated(boolean activated) {
         this.activated = activated;
+    }
+    public LocalDate getPayDate() {
+        return payDate;
+    }
+    public void setPayDate(LocalDate payDate) {
+        this.payDate = payDate;
+    }
+    public LocalDate getPrimeDate() {
+        return primeDate;
+    }
+    public void setPrimeDate(LocalDate primeDate) {
+        this.primeDate = primeDate;
     }
 
     

@@ -1,5 +1,8 @@
 package com.pay.organism.business;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -58,7 +61,9 @@ public class OrganismBusiness {
         RoleType role = RoleType.valueOf(accountOrganismDto.getAccountRole().toUpperCase());
 
         organism.setActivated(false);
-        organism.setCreationDate(new Date());
+        organism.setCreationDate(LocalDate.now());
+        organism.setPayDate(LocalDate.now().withDayOfMonth(1));
+        organism.setPrimeDate(LocalDate.now().withDayOfMonth(1));
         organism.setBudget(budget);
         organism = organismRepository.save(organism);
 
@@ -70,6 +75,7 @@ public class OrganismBusiness {
         return account;
     }
 
+    @Transactional
     public Organism upDateOrganism(int id, Organism organism) {
 
         Organism organism1 = organismRepository.findById(id).get();
@@ -78,6 +84,10 @@ public class OrganismBusiness {
             organism1.setBudget(organism.getBudget());
         if (organism.getDesign() != null && !organism.getDesign().equals("") && !organism.getDesign().trim().equals(""))
             organism1.setDesign(organism.getDesign());
+        if (organism.getPayDate() != null)
+            organism1.setPayDate(organism.getPayDate().withDayOfMonth(1));
+        if (organism.getPrimeDate() != null)
+            organism1.setPrimeDate(organism.getPrimeDate().withDayOfMonth(1));
 
         return organismRepository.save(organism1);
 
@@ -104,6 +114,52 @@ public class OrganismBusiness {
             }
 
         return succes;
+
+    }
+
+    public LocalDate getPayDate(int idOrganism) {
+
+        Optional<Organism> organism = organismRepository.findById(idOrganism);
+        if (organism.isPresent())
+            return organism.get().getPayDate();
+        else
+            return null;
+
+    }
+
+    public LocalDate incrementPayDate(int idOrganism) {
+        Optional<Organism> organism = organismRepository.findById(idOrganism);
+        if (organism.isPresent()) {
+
+            Organism organism1 = organism.get();
+            LocalDate date = organism1.getPayDate().plusMonths(1);
+            organism1.setPayDate(date);
+            organismRepository.save(organism1);
+            return date;
+        } else
+            return null;
+    }
+
+    public LocalDate getPrimeDate(int idOrganism) {
+
+        Optional<Organism> organism = organismRepository.findById(idOrganism);
+        if (organism.isPresent())
+            return organism.get().getPrimeDate();
+        else
+            return null;
+
+    }
+
+    public LocalDate incrementPrimeDate(int idOrganism) {
+        Optional<Organism> organism = organismRepository.findById(idOrganism);
+        if (organism.isPresent()) {
+            Organism organism1 = organism.get();
+            LocalDate date = organism1.getPrimeDate().plusMonths(3);
+            organism1.setPrimeDate(date);
+            organismRepository.save(organism1);
+            return date;
+        } else
+            return null;
 
     }
 

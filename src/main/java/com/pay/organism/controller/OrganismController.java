@@ -1,7 +1,8 @@
 package com.pay.organism.controller;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import com.pay.organism.business.AccountBusiness;
@@ -34,7 +35,7 @@ public class OrganismController {
     private AccountBusiness accountBusiness;
 
     @GetMapping(value = "/Organism/Organism/Get/{id}")
-    public ResponseEntity<Organism> getOrganism(@PathVariable int id) {
+    public ResponseEntity<Organism> getOrganism(@PathVariable("id") int id) {
         Optional<Organism> organism = organismBusiness.getOrganism(id);
         if (organism.isPresent()) {
             return new ResponseEntity<>(organism.get(), HttpStatus.OK);
@@ -70,24 +71,22 @@ public class OrganismController {
     @PutMapping(value = "/Organism/Organism/Update/{id}")
     public ResponseEntity<Organism> upDateOrganism(@PathVariable("id") int id, @RequestBody Organism organism) {
 
+        Optional<Organism> organism2 = organismBusiness.getOrganism(id);
 
-            Optional<Organism> organism2 = organismBusiness.getOrganism(id);
-            
-            if (organism2.isPresent()) {
-                try {
-                  
-                    Organism organism4 = organismBusiness.upDateOrganism(id, organism);
-                    return new ResponseEntity<>(organism4, HttpStatus.CREATED);
+        if (organism2.isPresent()) {
+            try {
 
-                } catch (Exception e) {
-                    throw new NoEntityAddedException("entity not saved");
-                }
+                Organism organism4 = organismBusiness.upDateOrganism(id, organism);
+                return new ResponseEntity<>(organism4, HttpStatus.CREATED);
 
-            } else {
-                throw new EntityNotFoundException("document introuvable");
-
+            } catch (Exception e) {
+                throw new NoEntityAddedException("entity not saved");
             }
-       
+
+        } else {
+            throw new EntityNotFoundException("document introuvable");
+
+        }
 
     }
 
@@ -110,6 +109,64 @@ public class OrganismController {
                 throw new NoEntityAddedException("entity not saved");
         } else
             throw new EntityNotFoundException("document introuvable");
+
+    }
+
+    @GetMapping(value = "/Organism/Organism/GetPayDate/{id}")
+    public ResponseEntity<LocalDate> getPayDate(@PathVariable int id) {
+
+        LocalDate payDate = organismBusiness.getPayDate(id);
+        if (payDate != null) {
+            return new ResponseEntity<>(payDate, HttpStatus.OK);
+        }
+
+        else {
+            throw new EntityNotFoundException("Date of Pay not found");
+
+        }
+
+    }
+
+    @GetMapping(value = "/Organism/Organism/IncrementPayDate/{id}")
+    public ResponseEntity<LocalDate> incrementPayDate(@PathVariable("id") int id) {
+        LocalDate payDate = organismBusiness.incrementPayDate(id);
+        if (payDate != null) {
+            return new ResponseEntity<>(payDate, HttpStatus.OK);
+        }
+
+        else {
+            throw new EntityNotFoundException("Date of Pay not incremented");
+
+        }
+
+    }
+
+    @GetMapping(value = "/Organism/Organism/GetPrimeDate/{id}")
+    public ResponseEntity<LocalDate> getPrimeDate(@PathVariable int id) {
+
+        LocalDate primeDate = organismBusiness.getPrimeDate(id);
+        if (primeDate != null) {
+            return new ResponseEntity<>(primeDate, HttpStatus.OK);
+        }
+
+        else {
+            throw new EntityNotFoundException("Date of Pay not found");
+
+        }
+
+    }
+
+    @GetMapping(value = "/Organism/Organism/IncrementPrimeDate/{id}")
+    public ResponseEntity<LocalDate> incrementPrimeDate(@PathVariable("id") int id) {
+        LocalDate primeDate = organismBusiness.incrementPrimeDate(id);
+        if (primeDate != null) {
+            return new ResponseEntity<>(primeDate, HttpStatus.OK);
+        }
+
+        else {
+            throw new EntityNotFoundException("Date of Pay not incremented");
+
+        }
 
     }
 }
