@@ -3,10 +3,6 @@ package com.pay.organism.business;
 import java.util.List;
 import java.util.Optional;
 
-import com.pay.organism.model.Corps;
-import com.pay.organism.repository.CorpsRepository;
-import com.pay.organism.repository.OrganismRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -15,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import com.pay.organism.model.Corps;
+import com.pay.organism.repository.CorpsRepository;
 
 @Service
 public class CorpsBusiness {
@@ -54,17 +53,19 @@ public class CorpsBusiness {
 
         boolean succes = false;
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity httpEntity = HttpEntity.EMPTY;
+        HttpEntity<?> httpEntity = HttpEntity.EMPTY;
         ResponseEntity<Boolean> responseEntity = restTemplate
                 .exchange(ressourceUrl + idCorps, HttpMethod.GET, httpEntity, Boolean.class);
-        if (responseEntity.getStatusCodeValue() == HttpStatus.OK.value())
-            if (responseEntity.hasBody())
-                if (responseEntity.getBody().booleanValue()) {
+                
+        if (responseEntity.getStatusCodeValue() == HttpStatus.OK.value() && responseEntity.hasBody()) {
+            boolean reponse = responseEntity.getBody();
+            if (reponse) {
 
-                    corpsRepository.deleteById(idCorps);
-                    succes = true;
+                corpsRepository.deleteById(idCorps);
+                succes = true;
 
-                }
+            }
+        }
 
         return succes;
 

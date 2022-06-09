@@ -78,18 +78,22 @@ public class OrganismBusiness {
     @Transactional
     public Organism upDateOrganism(int id, Organism organism) {
 
-        Organism organism1 = organismRepository.findById(id).get();
+        Optional<Organism> organism1 = organismRepository.findById(id);
+        Organism organism2 = new Organism();
+        if (organism1.isPresent()) {
+            organism2 = organism1.get();
+            if (organism.getBudget() != null)
+                organism2.setBudget(organism.getBudget());
+            if (organism.getDesign() != null && !organism.getDesign().equals("")
+                    && !organism.getDesign().trim().equals(""))
+                organism2.setDesign(organism.getDesign());
+            if (organism.getPayDate() != null)
+                organism2.setPayDate(organism.getPayDate().withDayOfMonth(1));
+            if (organism.getPrimeDate() != null)
+                organism2.setPrimeDate(organism.getPrimeDate().withDayOfMonth(1));
+        }
 
-        if (organism.getBudget() != null)
-            organism1.setBudget(organism.getBudget());
-        if (organism.getDesign() != null && !organism.getDesign().equals("") && !organism.getDesign().trim().equals(""))
-            organism1.setDesign(organism.getDesign());
-        if (organism.getPayDate() != null)
-            organism1.setPayDate(organism.getPayDate().withDayOfMonth(1));
-        if (organism.getPrimeDate() != null)
-            organism1.setPrimeDate(organism.getPrimeDate().withDayOfMonth(1));
-
-        return organismRepository.save(organism1);
+        return organismRepository.save(organism2);
 
     }
 
@@ -104,14 +108,14 @@ public class OrganismBusiness {
 
         boolean succes = false;
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity httpEntity = HttpEntity.EMPTY;
+        HttpEntity<?> httpEntity = HttpEntity.EMPTY;
         ResponseEntity<Boolean> responseEntity = restTemplate
                 .exchange(ressourceUrl + idOrganism, HttpMethod.POST, httpEntity, Boolean.class);
 
-        if (responseEntity.getStatusCodeValue() == HttpStatus.CREATED.value())
-            if (responseEntity.hasBody()) {
-                succes = responseEntity.getBody().booleanValue();
-            }
+        if (responseEntity.getStatusCodeValue() == HttpStatus.CREATED.value() && responseEntity.hasBody() )
+            
+                succes = responseEntity.getBody();
+            
 
         return succes;
 
