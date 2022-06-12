@@ -34,6 +34,9 @@ public class OrganismController {
     @Autowired
     private AccountBusiness accountBusiness;
 
+    private String organismNotSaved = "Organism not saved";
+    private String organismNotFound = "Organism not found";
+
     @GetMapping(value = "/Organism/Organism/Get/{id}")
     public ResponseEntity<Organism> getOrganism(@PathVariable("id") int id) {
         Optional<Organism> organism = organismBusiness.getOrganism(id);
@@ -42,7 +45,7 @@ public class OrganismController {
         }
 
         else {
-            throw new EntityNotFoundException("organism not found");
+            throw new EntityNotFoundException(organismNotFound);
 
         }
 
@@ -52,7 +55,7 @@ public class OrganismController {
     public List<Organism> allOrganism() {
         List<Organism> organisms = organismBusiness.findAllOrganisms();
         if (organisms.isEmpty())
-            throw new EntityNotFoundException("organism not found");
+            throw new EntityNotFoundException(organismNotFound);
         else
             return organisms;
     }
@@ -63,7 +66,7 @@ public class OrganismController {
             Account account = organismBusiness.createOrganismOfThatAccount(accountOrganismDto);
             return new ResponseEntity<>(account, HttpStatus.CREATED);
         } catch (Exception e) {
-            throw new NoEntityAddedException("Organism not saved");
+            throw new NoEntityAddedException(organismNotSaved);
         }
 
     }
@@ -80,11 +83,11 @@ public class OrganismController {
                 return new ResponseEntity<>(organism4, HttpStatus.CREATED);
 
             } catch (Exception e) {
-                throw new NoEntityAddedException("entity not saved");
+                throw new NoEntityAddedException(organismNotSaved);
             }
 
         } else {
-            throw new EntityNotFoundException("document introuvable");
+            throw new EntityNotFoundException(organismNotFound);
 
         }
 
@@ -104,11 +107,11 @@ public class OrganismController {
                     accountBusiness.sendActivationSuccesEmail(idAccount);
                     return new ResponseEntity<>(organism, HttpStatus.CREATED);
                 } else
-                    throw new NoEntityAddedException("entity not saved");
+                    throw new NoEntityAddedException(organismNotSaved);
             } else
-                throw new NoEntityAddedException("entity not saved");
+                throw new NoEntityAddedException(organismNotSaved);
         } else
-            throw new EntityNotFoundException("document introuvable");
+            throw new EntityNotFoundException(organismNotFound);
 
     }
 

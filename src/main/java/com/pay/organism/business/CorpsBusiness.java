@@ -35,13 +35,16 @@ public class CorpsBusiness {
 
     public Corps updateCorps(int id, Corps corps) {
 
-        Corps corps1 = corpsRepository.findById(id).get();
-
-        if (corps.getCode() > 0)
-            corps1.setCode(corps.getCode());
-        if (corps.getDesign() != null && !corps.getDesign().equals("") && !corps.getDesign().trim().equals(""))
-            corps1.setDesign(corps.getDesign());
-        return corpsRepository.save(corps1);
+        Optional<Corps> corps1 = corpsRepository.findById(id);
+        Corps corps2 = new Corps();
+        if (corps1.isPresent()) {
+            corps2 = corps1.get();
+            if (corps.getCode() > 0)
+                corps2.setCode(corps.getCode());
+            if (corps.getDesign() != null && !corps.getDesign().equals("") && !corps.getDesign().trim().equals(""))
+                corps2.setDesign(corps.getDesign());
+        }
+        return corpsRepository.save(corps2);
 
     }
 
@@ -56,7 +59,7 @@ public class CorpsBusiness {
         HttpEntity<?> httpEntity = HttpEntity.EMPTY;
         ResponseEntity<Boolean> responseEntity = restTemplate
                 .exchange(ressourceUrl + idCorps, HttpMethod.GET, httpEntity, Boolean.class);
-                
+
         if (responseEntity.getStatusCodeValue() == HttpStatus.OK.value() && responseEntity.hasBody()) {
             boolean reponse = responseEntity.getBody();
             if (reponse) {
